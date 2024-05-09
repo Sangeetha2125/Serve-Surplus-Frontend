@@ -3,7 +3,6 @@ import 'dart:io';
 
 import 'package:cloudinary_public/cloudinary_public.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 import 'package:serve_surplus/constants/http_response_handler.dart';
 import 'package:serve_surplus/constants/secrets.dart';
@@ -78,5 +77,40 @@ class DonorServices {
             .showSnackBar(SnackBar(content: Text(error.toString())));
       }
     }
+  }
+
+  static Future<List<Donation>> getDonationHistory(
+      {required BuildContext context}) async {
+    List<Donation> donations = [];
+    String token =
+        Provider.of<UserProvider>(context, listen: false).user["token"];
+    try {
+      http.Response response = await http.get(
+        Uri.parse("https://serve-surplus.onrender.com/api/donor/history"),
+        headers: <String, String>{
+          "Content-Type": "application/json; charset=UTF-8",
+          "Authorization": "Bearer $token"
+        },
+      );
+      if (context.mounted) {
+        httpResponseHandler(
+          context: context,
+          response: response,
+          onSuccess: () {
+            final donationHistory = jsonDecode(response.body);
+            donations = (donationHistory as List<dynamic>)
+                .map((d) => Donation.fromMap(d))
+                .toList();
+          },
+        );
+      }
+    } catch (error) {
+      if (context.mounted) {
+        debugPrint(error.toString());
+        ScaffoldMessenger.of(context)
+            .showSnackBar(SnackBar(content: Text(error.toString())));
+      }
+    }
+    return donations;
   }
 }

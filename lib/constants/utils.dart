@@ -26,56 +26,59 @@ void addDonationDialog(
       context: context,
       barrierDismissible: false,
       builder: (context) {
-        return AlertDialog(
-          insetPadding: const EdgeInsets.all(10),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(10),
-          ),
-          title: const Text(
-            "Add Donation",
-            style: TextStyle(
-              fontSize: 20,
-              fontWeight: FontWeight.w500,
+        return Form(
+          key: itemFormKey,
+          child: AlertDialog(
+            insetPadding: const EdgeInsets.all(10),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10),
             ),
-          ),
-          content: Form(
-            key: itemFormKey,
-            child: CustomTextField(
+            title: const Text(
+              "Add Donation",
+              style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+            content: CustomTextField(
+              extraWidth: true,
               controller: itemController,
               keyboardType: TextInputType.number,
               label: "No. of items you wish to donate",
             ),
-          ),
-          actions: [
-            InkWell(
-              onTap: () {
-                int items = int.parse(itemController.text);
-                if (items > 0) {
-                  donateFood(items);
-                }
-              },
-              child: const Text(
-                "Proceed",
-                style: TextStyle(
-                  color: Color.fromARGB(255, 7, 107, 11),
-                ),
-              ),
-            ),
-            InkWell(
-              onTap: () {
-                Navigator.pop(context);
-              },
-              child: const Padding(
-                padding: EdgeInsets.only(left: 14.0),
-                child: Text(
-                  "Cancel",
+            actions: [
+              InkWell(
+                onTap: () {
+                  if (itemFormKey.currentState!.validate()) {
+                    int items = int.parse(itemController.text);
+                    if (items > 0) {
+                      donateFood(items);
+                    }
+                  }
+                },
+                child: const Text(
+                  "Proceed",
                   style: TextStyle(
-                    color: Colors.red,
+                    color: Color.fromARGB(255, 7, 107, 11),
                   ),
                 ),
               ),
-            ),
-          ],
+              InkWell(
+                onTap: () {
+                  Navigator.pop(context);
+                },
+                child: const Padding(
+                  padding: EdgeInsets.only(left: 14.0),
+                  child: Text(
+                    "Cancel",
+                    style: TextStyle(
+                      color: Colors.red,
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
         );
       });
 }

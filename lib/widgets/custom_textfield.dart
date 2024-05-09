@@ -8,6 +8,7 @@ class CustomTextField extends StatefulWidget {
   final bool isPassword;
   final IconData? prefixIcon;
   final int maxLines;
+  final bool extraWidth;
   const CustomTextField({
     super.key,
     this.controller,
@@ -17,6 +18,7 @@ class CustomTextField extends StatefulWidget {
     this.readOnlyValue,
     this.isPassword = false,
     this.maxLines = 1,
+    this.extraWidth = false,
   });
 
   @override
@@ -51,9 +53,9 @@ class _CustomTextFieldState extends State<CustomTextField> {
         hintStyle: const TextStyle(
           color: Colors.black54,
         ),
-        contentPadding: const EdgeInsets.all(
-          16,
-        ),
+        contentPadding: widget.extraWidth
+            ? const EdgeInsets.all(16).copyWith(right: 24)
+            : const EdgeInsets.all(16),
         prefixIcon: widget.prefixIcon != null
             ? Icon(
                 widget.prefixIcon,
@@ -93,6 +95,14 @@ class _CustomTextFieldState extends State<CustomTextField> {
         ),
       ),
       validator: (value) {
+        if (widget.extraWidth) {
+          if (value == null || value.isEmpty) {
+            return "Enter the no. of items you wish to donate";
+          }
+          if (int.parse(value) <= 0) {
+            return "Items should be greater than 0";
+          }
+        }
         if (value == null || value.isEmpty) {
           return "Enter your ${widget.label}";
         }
