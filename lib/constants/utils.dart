@@ -36,7 +36,7 @@ void addDonationDialog(
             title: const Text(
               "Add Donation",
               style: TextStyle(
-                fontSize: 20,
+                fontSize: 19,
                 fontWeight: FontWeight.w500,
               ),
             ),
@@ -60,6 +60,8 @@ void addDonationDialog(
                   "Proceed",
                   style: TextStyle(
                     color: Color.fromARGB(255, 7, 107, 11),
+                    fontSize: 14,
+                    fontWeight: FontWeight.w500,
                   ),
                 ),
               ),
@@ -73,6 +75,8 @@ void addDonationDialog(
                     "Cancel",
                     style: TextStyle(
                       color: Colors.red,
+                      fontSize: 14,
+                      fontWeight: FontWeight.w500,
                     ),
                   ),
                 ),
