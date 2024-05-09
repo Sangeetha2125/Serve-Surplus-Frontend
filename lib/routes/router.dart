@@ -1,0 +1,65 @@
+import 'package:flutter/material.dart';
+import 'package:serve_surplus/views/auth/login.dart';
+import 'package:serve_surplus/views/donor/add_donation.dart';
+import 'package:serve_surplus/views/donor/donation_history.dart';
+import 'package:serve_surplus/views/layouts/donor_layout.dart';
+import 'package:serve_surplus/views/layouts/receiver_layout.dart';
+import 'package:serve_surplus/views/user/profile.dart';
+import 'package:serve_surplus/views/auth/register.dart';
+import 'package:serve_surplus/widgets/edit_profile.dart';
+
+Route<dynamic> generateRoute(RouteSettings routeSettings) {
+  switch (routeSettings.name) {
+    case RegisterPage.routeName:
+      return MaterialPageRoute(
+        settings: routeSettings,
+        builder: (context) => const RegisterPage(),
+      );
+    case LoginPage.routeName:
+      return MaterialPageRoute(
+        settings: routeSettings,
+        builder: (context) => const LoginPage(),
+      );
+    case ProfilePage.routeName:
+      return MaterialPageRoute(
+        settings: routeSettings,
+        builder: (context) => const ProfilePage(),
+      );
+    case EditProfile.routeName:
+      return MaterialPageRoute(
+        settings: routeSettings,
+        builder: (context) => const EditProfile(),
+      );
+    case DonorLayout.routeName:
+      return MaterialPageRoute(
+        settings: routeSettings,
+        builder: (context) => const DonorLayout(),
+      );
+    case AddDonationPage.routeName:
+      return MaterialPageRoute(
+        settings: routeSettings,
+        builder: (context) => AddDonationPage(
+          items: routeSettings.arguments as int,
+        ),
+      );
+    case DonationHistoryPage.routeName:
+      return MaterialPageRoute(
+        settings: routeSettings,
+        builder: (context) => const DonationHistoryPage(),
+      );
+    case ReceiverLayout.routeName:
+      return MaterialPageRoute(
+        settings: routeSettings,
+        builder: (context) => const ReceiverLayout(),
+      );
+    default:
+      return MaterialPageRoute(
+        settings: routeSettings,
+        builder: (context) => const Scaffold(
+          body: Center(
+            child: Text("Route doesn't exist"),
+          ),
+        ),
+      );
+  }
+}
