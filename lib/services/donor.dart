@@ -80,35 +80,3 @@ class DonorServices {
     }
   }
 }
-
-
-
-
-//if (context.mounted) {
-        // String token =
-        //     Provider.of<UserProvider>(context, listen: false).user["token"];
-        // final response = await http.post(
-        //   Uri.parse("https://serve-surplus.onrender.com/api/products"),
-        //   headers: <String, String>{
-        //     "Content-Type": "application/json; charset=UTF-8",
-        //     "Authorization": token
-        //   },
-        //   body: jsonEncode(requestBody),
-        // );
-        // if (context.mounted) {
-        //   httpResponseHandler(
-        //     context: context,
-        //     response: response,
-        //     onSuccess: () {
-        //       if (context.mounted) {
-        //         ScaffoldMessenger.of(context).showSnackBar(
-        //           const SnackBar(
-        //             content: Text("Donation added successfully"),
-        //           ),
-        //         );
-        //         Navigator.pushNamed(context, DonationHistoryPage.routeName);
-        //       }
-        //     },
-        //   );
-        // }
-      //}
