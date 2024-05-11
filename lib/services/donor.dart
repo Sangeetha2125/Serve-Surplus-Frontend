@@ -95,7 +95,7 @@ class DonorServices {
           "Authorization": "Bearer $token"
         },
       );
-      print("Donation History - ${jsonDecode(response.body)}");
+      debugPrint("Donation History - ${jsonDecode(response.body)}");
 
       if (context.mounted) {
         httpResponseHandler(
@@ -106,13 +106,13 @@ class DonorServices {
             donations = (donationHistory as List<dynamic>)
                 .map((d) => Donation.fromMap(d))
                 .toList();
-            print(donations);
+            debugPrint(donations.toString());
           },
         );
       }
     } catch (error) {
       if (context.mounted) {
-        print("Donation History - $error");
+        debugPrint("Donation History - $error");
       }
     }
     return donations;
@@ -134,7 +134,7 @@ class DonorServices {
           "Authorization": "Bearer $token"
         },
       );
-      print("getLiveDonations - ${jsonDecode(response.body)}");
+      debugPrint("getLiveDonations - ${jsonDecode(response.body)}");
       if (context.mounted) {
         httpResponseHandler(
           context: context,

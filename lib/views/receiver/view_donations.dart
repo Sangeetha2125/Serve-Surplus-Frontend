@@ -114,7 +114,7 @@ class _ViewDonationsPageState extends State<ViewDonationsPage> {
                                             borderRadius:
                                                 BorderRadius.circular(20),
                                             border: Border.all(
-                                              width: 0.35,
+                                              width: 0.3,
                                               color: Colors.white,
                                             ),
                                           ),

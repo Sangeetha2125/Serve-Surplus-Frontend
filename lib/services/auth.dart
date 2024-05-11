@@ -42,15 +42,15 @@ class AuthService {
             if (context.mounted) {
               Provider.of<UserProvider>(context, listen: false)
                   .setUser(response.body);
-              Navigator.pushNamedAndRemoveUntil(
-                context,
-                ProfilePage.routeName,
-                (route) => false,
-              );
               ScaffoldMessenger.of(context).showSnackBar(
                 const SnackBar(
                   content: Text("Your account has been created successfully"),
                 ),
+              );
+              Navigator.pushNamedAndRemoveUntil(
+                context,
+                ProfilePage.routeName,
+                (route) => false,
               );
             }
           },

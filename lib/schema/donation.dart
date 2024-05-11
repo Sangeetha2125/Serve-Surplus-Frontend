@@ -8,13 +8,14 @@ class Donation {
   final String? donor;
   final int? distance;
 
-  Donation(
-      {required this.food,
-      required this.quantity,
-      required this.image,
-      this.donatedAt,
-      this.donor,
-      this.distance});
+  Donation({
+    required this.food,
+    required this.quantity,
+    required this.image,
+    this.donatedAt,
+    this.donor,
+    this.distance,
+  });
 
   Map<String, dynamic> toMap() {
     Map<String, dynamic> map = {

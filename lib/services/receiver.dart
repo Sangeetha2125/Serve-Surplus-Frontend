@@ -37,7 +37,7 @@ class ReceiverServices {
           response: response,
           onSuccess: () {
             List<dynamic> responseBody = jsonDecode(response.body);
-            print(responseBody);
+            debugPrint(responseBody.toString());
             for (int i = 0; i < responseBody.length; i++) {
               final item = responseBody[i];
               Map<String, dynamic> donationItem = {
@@ -55,7 +55,7 @@ class ReceiverServices {
                 donationItem["donatedAt"] = item["donations"][j]["donatedAt"];
                 donations.add(Donation.fromMap(donationItem));
               }
-              print("All Nearest Donations: $donations");
+              debugPrint("All Nearest Donations: $donations");
             }
           },
         );
