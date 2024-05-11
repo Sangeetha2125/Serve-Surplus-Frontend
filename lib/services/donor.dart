@@ -41,9 +41,10 @@ class DonorServices {
     return null;
   }
 
-  static void addDonation(
-      {required BuildContext context,
-      required List<Donation> donations}) async {
+  static void addDonation({
+    required BuildContext context,
+    required List<Donation> donations,
+  }) async {
     try {
       String token =
           Provider.of<UserProvider>(context, listen: false).user["token"];
@@ -55,7 +56,9 @@ class DonorServices {
           "Content-Type": "application/json; charset=UTF-8",
           "Authorization": "Bearer $token"
         },
-        body: jsonEncode({"donations": donationMaps}),
+        body: jsonEncode({
+          "donations": donationMaps,
+        }),
       );
       if (context.mounted) {
         httpResponseHandler(
@@ -72,10 +75,7 @@ class DonorServices {
         );
       }
     } catch (error) {
-      if (context.mounted) {
-        ScaffoldMessenger.of(context)
-            .showSnackBar(SnackBar(content: Text(error.toString())));
-      }
+      debugPrint(error.toString());
     }
   }
 
@@ -84,6 +84,9 @@ class DonorServices {
     List<Donation> donations = [];
     String token =
         Provider.of<UserProvider>(context, listen: false).user["token"];
+    if (token == '') {
+      return donations;
+    }
     try {
       http.Response response = await http.get(
         Uri.parse("https://serve-surplus.onrender.com/api/donor/history"),
@@ -92,6 +95,8 @@ class DonorServices {
           "Authorization": "Bearer $token"
         },
       );
+      print("Donation History - ${jsonDecode(response.body)}");
+
       if (context.mounted) {
         httpResponseHandler(
           context: context,
@@ -101,15 +106,49 @@ class DonorServices {
             donations = (donationHistory as List<dynamic>)
                 .map((d) => Donation.fromMap(d))
                 .toList();
+            print(donations);
           },
         );
       }
     } catch (error) {
       if (context.mounted) {
-        debugPrint(error.toString());
-        ScaffoldMessenger.of(context)
-            .showSnackBar(SnackBar(content: Text(error.toString())));
+        print("Donation History - $error");
       }
+    }
+    return donations;
+  }
+
+  static Future<List<Donation>> getLiveDonations(
+      {required BuildContext context}) async {
+    List<Donation> donations = [];
+    String token =
+        Provider.of<UserProvider>(context, listen: false).user["token"];
+    if (token == '') {
+      return donations;
+    }
+    try {
+      http.Response response = await http.get(
+        Uri.parse("https://serve-surplus.onrender.com/api/donor"),
+        headers: <String, String>{
+          "Content-Type": "application/json; charset=UTF-8",
+          "Authorization": "Bearer $token"
+        },
+      );
+      print("getLiveDonations - ${jsonDecode(response.body)}");
+      if (context.mounted) {
+        httpResponseHandler(
+          context: context,
+          response: response,
+          onSuccess: () {
+            final liveDonations = jsonDecode(response.body);
+            donations = (liveDonations as List<dynamic>)
+                .map((d) => Donation.fromMap(d))
+                .toList();
+          },
+        );
+      }
+    } catch (error) {
+      debugPrint(error.toString());
     }
     return donations;
   }

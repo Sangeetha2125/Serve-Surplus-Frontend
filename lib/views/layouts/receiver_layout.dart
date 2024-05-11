@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:provider/provider.dart';
+import 'package:serve_surplus/providers/location.dart';
+import 'package:serve_surplus/services/location.dart';
 import 'package:serve_surplus/views/receiver/view_donations.dart';
 import 'package:serve_surplus/views/user/profile.dart';
 
@@ -17,6 +21,38 @@ class _ReceiverLayoutState extends State<ReceiverLayout> {
     const ViewDonationsPage(),
     const ProfilePage(),
   ];
+  Position? _currentLocation;
+  late bool servicePermission = false;
+  late LocationPermission permission;
+
+  @override
+  void initState() {
+    super.initState();
+    getLocationCoordinates();
+  }
+
+  void _getCurrentLocation() async {
+    servicePermission = await Geolocator.isLocationServiceEnabled();
+
+    if (!servicePermission) {
+      debugPrint("Service Disabled");
+    }
+
+    permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+    }
+
+    _currentLocation = await Geolocator.getCurrentPosition();
+    Provider.of<LocationProvider>(context, listen: false)
+        .setLocation(_currentLocation);
+    LocationServices.setUserLocation(context);
+  }
+
+  void getLocationCoordinates() {
+    _getCurrentLocation();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

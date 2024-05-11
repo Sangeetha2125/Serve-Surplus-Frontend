@@ -1,19 +1,33 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
 
 class Donation {
   final String food;
   final int quantity;
   final String image;
+  final DateTime? donatedAt;
+  final String? donor;
+  final int? distance;
 
-  Donation({required this.food, required this.quantity, required this.image});
+  Donation(
+      {required this.food,
+      required this.quantity,
+      required this.image,
+      this.donatedAt,
+      this.donor,
+      this.distance});
 
   Map<String, dynamic> toMap() {
-    return <String, dynamic>{
+    Map<String, dynamic> map = {
       'food': food,
       'quantity': quantity,
       'image': image,
     };
+
+    if (donatedAt != null) {
+      map['donatedAt'] = donatedAt!.toIso8601String();
+    }
+
+    return map;
   }
 
   factory Donation.fromMap(Map<String, dynamic> map) {
@@ -21,6 +35,11 @@ class Donation {
       food: map['food'] as String,
       quantity: map['quantity'] as int,
       image: map['image'] as String,
+      donatedAt: map['donatedAt'] != null
+          ? DateTime.parse(map['donatedAt'] as String)
+          : null,
+      donor: map['donor'] != null ? map['donor'] as String : null,
+      distance: map['distance'] != null ? map['distance'] as int : null,
     );
   }
 

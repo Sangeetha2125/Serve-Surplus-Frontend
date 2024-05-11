@@ -8,12 +8,13 @@ class User {
   final String role;
   final String token;
 
-  User(
-      {required this.id,
-      required this.email,
-      required this.password,
-      required this.role,
-      required this.token});
+  User({
+    required this.id,
+    required this.email,
+    required this.password,
+    required this.role,
+    required this.token,
+  });
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{

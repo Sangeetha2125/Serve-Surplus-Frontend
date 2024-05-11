@@ -30,8 +30,8 @@ class _CustomTextFieldState extends State<CustomTextField> {
 
   @override
   void dispose() {
-    super.dispose();
     isVisible = false;
+    super.dispose();
   }
 
   @override

@@ -24,14 +24,6 @@ class _AddDonationPageState extends State<AddDonationPage> {
   final TextEditingController _foodController = TextEditingController();
   final TextEditingController _quantityController = TextEditingController();
 
-  @override
-  void dispose() {
-    _foodController.dispose();
-    _quantityController.dispose();
-    image = null;
-    super.dispose();
-  }
-
   void addDonation() async {
     if (image == null) {
       addAlertDonationDialog(context);
@@ -71,6 +63,14 @@ class _AddDonationPageState extends State<AddDonationPage> {
       _quantityController.text = "";
       image = null;
     });
+  }
+
+  @override
+  void dispose() {
+    _foodController.dispose();
+    _quantityController.dispose();
+    image = null;
+    super.dispose();
   }
 
   @override

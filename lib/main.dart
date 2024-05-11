@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:serve_surplus/providers/location.dart';
 import 'package:serve_surplus/providers/user.dart';
 import 'package:serve_surplus/routes/router.dart';
 import 'package:serve_surplus/services/auth.dart';
@@ -10,8 +11,11 @@ import 'package:serve_surplus/views/layouts/receiver_layout.dart';
 void main() {
   runApp(
     ChangeNotifierProvider(
-      create: (context) => UserProvider(),
-      child: const MyApp(),
+      create: (context) => LocationProvider(),
+      child: ChangeNotifierProvider(
+        create: (context) => UserProvider(),
+        child: const MyApp(),
+      ),
     ),
   );
 }

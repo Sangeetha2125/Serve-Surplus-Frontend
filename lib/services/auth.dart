@@ -57,10 +57,7 @@ class AuthService {
         );
       }
     } catch (error) {
-      if (context.mounted) {
-        ScaffoldMessenger.of(context)
-            .showSnackBar(SnackBar(content: Text(error.toString())));
-      }
+      debugPrint(error.toString());
     }
   }
 
@@ -80,7 +77,7 @@ class AuthService {
           headers: <String, String>{
             "Content-Type": "application/json; charset=UTF-8"
           });
-
+      debugPrint("error: ${jsonDecode(response.body)}");
       if (context.mounted) {
         httpResponseHandler(
             context: context,
@@ -127,10 +124,7 @@ class AuthService {
             });
       }
     } catch (error) {
-      if (context.mounted) {
-        ScaffoldMessenger.of(context)
-            .showSnackBar(SnackBar(content: Text(error.toString())));
-      }
+      debugPrint(error.toString());
     }
   }
 
@@ -145,7 +139,7 @@ class AuthService {
       }
 
       http.Response response = await http.get(
-          Uri.parse("https://serve-surplus.onrender.com/api/auth/"),
+          Uri.parse("https://serve-surplus.onrender.com/api/auth"),
           headers: <String, String>{
             "Content-Type": "application/json; charset=UTF-8",
             "Authorization": "Bearer $token"
@@ -159,9 +153,7 @@ class AuthService {
         }
       }
     } catch (error) {
-      if (context.mounted) {
-        debugPrint(error.toString());
-      }
+      debugPrint(error.toString());
     }
   }
 
@@ -225,10 +217,7 @@ class AuthService {
         );
       }
     } catch (error) {
-      if (context.mounted) {
-        ScaffoldMessenger.of(context)
-            .showSnackBar(SnackBar(content: Text(error.toString())));
-      }
+      debugPrint(error.toString());
     }
   }
 }

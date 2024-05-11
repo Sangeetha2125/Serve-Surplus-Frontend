@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class CustomButton extends StatefulWidget {
   final String text;
-  final GlobalKey<FormState> formKey;
+  final GlobalKey<FormState>? formKey;
   final VoidCallback userService;
   const CustomButton(this.text,
       {super.key, required this.formKey, required this.userService});
@@ -16,7 +16,11 @@ class _CustomButtonState extends State<CustomButton> {
   Widget build(BuildContext context) {
     return ElevatedButton(
       onPressed: () {
-        if (widget.formKey.currentState!.validate()) {
+        if (widget.formKey != null) {
+          if (widget.formKey!.currentState!.validate()) {
+            widget.userService();
+          }
+        } else {
           widget.userService();
         }
       },

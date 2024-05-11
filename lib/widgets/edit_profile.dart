@@ -38,7 +38,6 @@ class _EditProfileState extends State<EditProfile> {
 
   @override
   void dispose() {
-    super.dispose();
     _nameController.dispose();
     _phoneController.dispose();
     _doorNumberController.dispose();
@@ -46,6 +45,7 @@ class _EditProfileState extends State<EditProfile> {
     _areaController.dispose();
     _cityController.dispose();
     _pinCodeController.dispose();
+    super.dispose();
   }
 
   @override
