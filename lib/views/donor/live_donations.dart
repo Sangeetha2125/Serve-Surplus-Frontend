@@ -98,6 +98,30 @@ class _LiveDonationsPageState extends State<LiveDonationsPage> {
                                       width: double.infinity,
                                       height: 170,
                                       fit: BoxFit.cover,
+                                      loadingBuilder: (
+                                        BuildContext context,
+                                        Widget child,
+                                        ImageChunkEvent? loadingProgress,
+                                      ) {
+                                        if (loadingProgress == null) {
+                                          return child;
+                                        }
+                                        return SizedBox(
+                                          height: 170,
+                                          child: Center(
+                                            child: CircularProgressIndicator(
+                                              value: loadingProgress
+                                                          .expectedTotalBytes !=
+                                                      null
+                                                  ? loadingProgress
+                                                          .cumulativeBytesLoaded /
+                                                      loadingProgress
+                                                          .expectedTotalBytes!
+                                                  : null,
+                                            ),
+                                          ),
+                                        );
+                                      },
                                     ),
                                     Align(
                                       alignment: Alignment.topRight,
