@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:serve_surplus/schema/donation.dart';
 import 'package:serve_surplus/widgets/custom_textfield.dart';
 
 Future<File?> pickImage() async {
@@ -145,6 +146,80 @@ void addAlertDonationDialog(BuildContext context) {
             top: 8,
             bottom: 24,
             right: 16,
+          ),
+        );
+      });
+}
+
+void addOrderDialog(
+    {required BuildContext context,
+    required Donation donation,
+    required Function orderFood}) {
+  final GlobalKey<FormState> orderFormKey = GlobalKey<FormState>();
+  final TextEditingController quantityController = TextEditingController();
+  showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) {
+        return Form(
+          key: orderFormKey,
+          child: AlertDialog(
+            insetPadding: const EdgeInsets.all(10),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10),
+            ),
+            title: const Text(
+              "Request Donation",
+              style: TextStyle(
+                fontSize: 19,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+            content: CustomTextField(
+              extraWidth: true,
+              controller: quantityController,
+              keyboardType: TextInputType.number,
+              isOrderModule: true,
+              orderQuantity: donation.quantity,
+              label: "No. of items you are in need of",
+            ),
+            actions: [
+              InkWell(
+                onTap: () {
+                  if (orderFormKey.currentState!.validate()) {
+                    int quantity = int.parse(quantityController.text);
+                    if (quantity > 0 && quantity <= donation.quantity) {
+                      Navigator.pop(context);
+                      orderFood(quantity);
+                    }
+                  }
+                },
+                child: const Text(
+                  "Request Donation",
+                  style: TextStyle(
+                    color: Color.fromARGB(255, 7, 107, 11),
+                    fontSize: 14,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+              ),
+              InkWell(
+                onTap: () {
+                  Navigator.pop(context);
+                },
+                child: const Padding(
+                  padding: EdgeInsets.only(left: 14.0),
+                  child: Text(
+                    "Cancel",
+                    style: TextStyle(
+                      color: Colors.red,
+                      fontSize: 14,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ),
+              ),
+            ],
           ),
         );
       });

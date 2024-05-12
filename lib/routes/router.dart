@@ -60,6 +60,8 @@ Route<dynamic> generateRoute(RouteSettings routeSettings) {
         builder: (context) => IndividualDonationPage(
           donorId: (routeSettings.arguments as Map<String, dynamic>)["donorId"]
               as String,
+          donationId: (routeSettings.arguments
+              as Map<String, dynamic>)["donationId"]! as String,
           donation: (routeSettings.arguments
               as Map<String, dynamic>)["donation"] as Donation,
         ),

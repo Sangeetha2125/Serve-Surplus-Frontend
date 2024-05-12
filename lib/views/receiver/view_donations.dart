@@ -19,6 +19,7 @@ class _ViewDonationsPageState extends State<ViewDonationsPage> {
       '/individual-donation',
       arguments: {
         "donorId": donations[index].donor,
+        "donationId": donations[index].donationId,
         "donation": donations[index],
       },
     );
@@ -43,7 +44,7 @@ class _ViewDonationsPageState extends State<ViewDonationsPage> {
       appBar: AppBar(
         backgroundColor: Colors.black,
         title: const Text(
-          "View Donations",
+          "Live Donations",
           style: TextStyle(
             fontSize: 17,
             color: Colors.white,
@@ -226,7 +227,9 @@ class _ViewDonationsPageState extends State<ViewDonationsPage> {
                                         "View Donation",
                                         formKey: null,
                                         userService: () =>
-                                            navigateToIndividualDonation(index),
+                                            navigateToIndividualDonation(
+                                          index,
+                                        ),
                                       )
                                     ],
                                   ),

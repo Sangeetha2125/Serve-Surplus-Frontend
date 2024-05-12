@@ -7,6 +7,7 @@ class Donation {
   final DateTime? donatedAt;
   final String? donor;
   final int? distance;
+  final String? donationId;
 
   Donation({
     required this.food,
@@ -15,6 +16,7 @@ class Donation {
     this.donatedAt,
     this.donor,
     this.distance,
+    this.donationId,
   });
 
   Map<String, dynamic> toMap() {
@@ -26,6 +28,10 @@ class Donation {
 
     if (donatedAt != null) {
       map['donatedAt'] = donatedAt!.toIso8601String();
+    }
+
+    if (donationId != null) {
+      map['donationId'] = donationId;
     }
 
     return map;
@@ -41,6 +47,8 @@ class Donation {
           : null,
       donor: map['donor'] != null ? map['donor'] as String : null,
       distance: map['distance'] != null ? map['distance'] as int : null,
+      donationId:
+          map['donationId'] != null ? map['donationId'] as String : null,
     );
   }
 

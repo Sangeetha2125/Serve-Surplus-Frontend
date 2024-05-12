@@ -9,6 +9,8 @@ class CustomTextField extends StatefulWidget {
   final IconData? prefixIcon;
   final int maxLines;
   final bool extraWidth;
+  final bool isOrderModule;
+  final int orderQuantity;
   const CustomTextField({
     super.key,
     this.controller,
@@ -19,6 +21,8 @@ class CustomTextField extends StatefulWidget {
     this.isPassword = false,
     this.maxLines = 1,
     this.extraWidth = false,
+    this.isOrderModule = false,
+    this.orderQuantity = 0,
   });
 
   @override
@@ -97,10 +101,21 @@ class _CustomTextFieldState extends State<CustomTextField> {
       validator: (value) {
         if (widget.extraWidth) {
           if (value == null || value.isEmpty) {
-            return "Enter the no. of items you wish to donate";
+            if (widget.isOrderModule) {
+              return "Enter the no. of items you wish to request";
+            } else {
+              return "Enter the no. of items you wish to donate";
+            }
           }
           if (int.parse(value) <= 0) {
-            return "Items should be greater than 0";
+            if (widget.isOrderModule) {
+              return "Items should be greater than 0";
+            } else {
+              return "Items should be greater than 0";
+            }
+          }
+          if (widget.isOrderModule && int.parse(value) > widget.orderQuantity) {
+            return "Items can't be greater than available quantity";
           }
         }
         if (value == null || value.isEmpty) {

@@ -8,15 +8,6 @@ import 'package:serve_surplus/schema/donation.dart';
 import "package:http/http.dart" as http;
 
 class ReceiverServices {
-  static void orderFood({
-    required BuildContext context,
-    required String id,
-  }) async {
-    try {} catch (error) {
-      debugPrint(error.toString());
-    }
-  }
-
   static Future<List<Donation>> getAllNearestDonations(
       {required BuildContext context}) async {
     List<Donation> donations = [];
@@ -47,13 +38,17 @@ class ReceiverServices {
                 "quantity": 0,
                 "donatedAt": null,
                 "image": '',
+                "donationId": null,
               };
               for (int j = 0; j < (item["donations"] as List).length; j++) {
                 donationItem["food"] = item["donations"][j]["food"];
                 donationItem["image"] = item["donations"][j]["image"];
                 donationItem["quantity"] = item["donations"][j]["quantity"];
                 donationItem["donatedAt"] = item["donations"][j]["donatedAt"];
+                donationItem["donationId"] = item["donations"][j]["_id"];
                 donations.add(Donation.fromMap(donationItem));
+                debugPrint(
+                    "Donation: ${Donation.fromMap(donationItem).toJson()}");
               }
               debugPrint("All Nearest Donations: $donations");
             }
@@ -96,5 +91,28 @@ class ReceiverServices {
       debugPrint("getDonorDetails - $error");
     }
     return result;
+  }
+
+  static void orderFood({
+    required BuildContext context,
+    required String donorId,
+    required Donation donation,
+  }) async {
+    try {
+      String token =
+          Provider.of<UserProvider>(context, listen: false).user["token"];
+      http.Response response = await http.post(
+        Uri.parse("https://serve-surplus.onrender.com/api/receiver/$donorId"),
+        body: donation.toJson(),
+        headers: <String, String>{
+          "Content-Type": "application/json; charset=UTF-8",
+          "Authorization": "Bearer $token"
+        },
+      );
+      debugPrint(donation.toJson());
+      debugPrint(jsonDecode(response.body).toString());
+    } catch (error) {
+      debugPrint(error.toString());
+    }
   }
 }

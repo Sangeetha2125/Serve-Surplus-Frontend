@@ -131,7 +131,7 @@ class _AddDonationPageState extends State<AddDonationPage> {
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Icon(
-                                  Icons.camera_enhance,
+                                  Icons.add_a_photo,
                                   size: 40,
                                   color: Colors.black54,
                                 ),

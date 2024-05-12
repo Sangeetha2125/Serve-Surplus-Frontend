@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:serve_surplus/constants/utils.dart';
 import 'package:serve_surplus/schema/donation.dart';
 import 'package:serve_surplus/services/receiver.dart';
 import 'package:serve_surplus/widgets/custom_button.dart';
@@ -7,9 +8,14 @@ import 'package:serve_surplus/widgets/custom_button.dart';
 class IndividualDonationPage extends StatefulWidget {
   static const String routeName = "/individual-donation";
   final String donorId;
+  final String donationId;
   final Donation donation;
-  const IndividualDonationPage(
-      {super.key, required this.donorId, required this.donation});
+  const IndividualDonationPage({
+    super.key,
+    required this.donorId,
+    required this.donation,
+    required this.donationId,
+  });
 
   @override
   State<IndividualDonationPage> createState() => _IndividualDonationPageState();
@@ -31,6 +37,24 @@ class _IndividualDonationPageState extends State<IndividualDonationPage> {
     if (context.mounted) {
       setState(() {});
     }
+  }
+
+  void orderFood(int quantity) {
+    Donation order = Donation(
+      food: widget.donation.food,
+      quantity: quantity,
+      image: widget.donation.image,
+      donationId: widget.donationId,
+      donatedAt: widget.donation.donatedAt,
+    );
+    ReceiverServices.orderFood(
+      context: context,
+      donorId: widget.donorId,
+      donation: order,
+    );
+    Navigator.pop(context);
+    
+    setState(() {});
   }
 
   @override
@@ -235,7 +259,11 @@ class _IndividualDonationPageState extends State<IndividualDonationPage> {
                           CustomButton(
                             "Request Donation",
                             formKey: null,
-                            userService: () {},
+                            userService: () => addOrderDialog(
+                              context: context,
+                              donation: widget.donation,
+                              orderFood: orderFood,
+                            ),
                           )
                         ],
                       ),
