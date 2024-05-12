@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_otp_text_field/flutter_otp_text_field.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:serve_surplus/schema/donation.dart';
 import 'package:serve_surplus/widgets/custom_textfield.dart';
@@ -221,6 +222,80 @@ void addOrderDialog(
               ),
             ],
           ),
+        );
+      });
+}
+
+void orderConfirmDialog({
+  required BuildContext context,
+  required Function confirmOrder,
+}) {
+  bool isCorrect = true;
+  showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) {
+        return AlertDialog(
+          insetPadding: const EdgeInsets.all(10),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10),
+          ),
+          title: const Center(
+            child: Text(
+              "Enter OTP",
+              style: TextStyle(
+                fontSize: 19,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+          ),
+          content: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              OtpTextField(
+                numberOfFields: 6,
+                showFieldAsBox: true,
+                borderColor: Colors.black,
+                focusedBorderColor: const Color.fromARGB(255, 8, 8, 127),
+                enabledBorderColor: Colors.black45,
+                onSubmit: (String verificationCode) {
+                  isCorrect = false;
+                },
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              Text(
+                isCorrect
+                    ? "Enter the OTP received from receiver to confirm the order!"
+                    : "Invalid OTP entered",
+                style: TextStyle(
+                  color: isCorrect ? Colors.black87 : Colors.red,
+                ),
+              ),
+            ],
+          ),
+          actions: [
+            Center(
+              child: InkWell(
+                onTap: () {
+                  Navigator.pop(context);
+                },
+                child: const Padding(
+                  padding: EdgeInsets.only(left: 14.0),
+                  child: Text(
+                    "Cancel",
+                    style: TextStyle(
+                      color: Colors.red,
+                      fontSize: 14,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ],
         );
       });
 }

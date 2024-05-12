@@ -225,4 +225,47 @@ class DonorServices {
     }
     return result;
   }
+
+  static Future<bool> confirmOrder({
+    required BuildContext context,
+    required String donorId,
+    required String receiverId,
+    required String orderId,
+    required String secret,
+  }) async {
+    bool isSecretCorrect = false;
+    Map<String, dynamic> requestBody = {
+      "orderId": orderId,
+      "donorId": donorId,
+      "receiverId": receiverId,
+      "secret": secret
+    };
+    try {
+      String token =
+          Provider.of<UserProvider>(context, listen: false).user["token"];
+      http.Response response = await http.post(
+        Uri.parse(
+          "https://serve-surplus.onrender.com/api/donor/confirm-order",
+        ),
+        body: jsonEncode(requestBody),
+        headers: <String, String>{
+          "Content-Type": "application/json; charset=UTF-8",
+          "Authorization": "Bearer $token"
+        },
+      );
+      debugPrint("Confirm Order - ${jsonDecode(response.body)}");
+      if (context.mounted) {
+        httpResponseHandler(
+          context: context,
+          response: response,
+          onSuccess: () {
+            isSecretCorrect = true;
+          },
+        );
+      }
+    } catch (error) {
+      debugPrint("confirmOrder - $error");
+    }
+    return isSecretCorrect;
+  }
 }

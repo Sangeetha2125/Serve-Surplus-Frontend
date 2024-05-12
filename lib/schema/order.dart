@@ -13,20 +13,21 @@ class Order {
   final DateTime date;
   final int quantity;
 
-  Order(
-      // ignore: non_constant_identifier_names
-      {required this.donor_id,
-      // ignore: non_constant_identifier_names
-      required this.receiver_id,
-      required this.food,
-      required this.image,
-      required this.status,
-      required this.id,
-      required this.date,
-      required this.quantity});
+  Order({
+    // ignore: non_constant_identifier_names
+    required this.donor_id,
+    // ignore: non_constant_identifier_names
+    required this.receiver_id,
+    required this.food,
+    required this.image,
+    required this.status,
+    required this.id,
+    required this.date,
+    required this.quantity,
+  });
 
   Map<String, dynamic> toMap() {
-    return <String, dynamic>{
+    Map<String, dynamic> map = {
       'donor_id': donor_id,
       'receiver_id': receiver_id,
       'food': food,
@@ -36,6 +37,7 @@ class Order {
       'date': date.toIso8601String(),
       'quantity': quantity,
     };
+    return map;
   }
 
   factory Order.fromMap(Map<String, dynamic> map) {

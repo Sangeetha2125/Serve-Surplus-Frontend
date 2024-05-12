@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:serve_surplus/constants/utils.dart';
 import 'package:serve_surplus/schema/order.dart';
 import 'package:serve_surplus/services/donor.dart';
 import 'package:serve_surplus/widgets/custom_button.dart';
@@ -31,6 +32,8 @@ class _IndividualDonorOrderPageState extends State<IndividualDonorOrderPage> {
       setState(() {});
     }
   }
+
+  confirmOrder() {}
 
   @override
   Widget build(BuildContext context) {
@@ -234,7 +237,10 @@ class _IndividualDonorOrderPageState extends State<IndividualDonorOrderPage> {
                           CustomButton(
                             "Confirm Order",
                             formKey: null,
-                            userService: () {},
+                            userService: () => orderConfirmDialog(
+                              context: context,
+                              confirmOrder: confirmOrder,
+                            ),
                           )
                         ],
                       ),
