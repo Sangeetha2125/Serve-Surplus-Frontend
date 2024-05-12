@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:serve_surplus/schema/donation.dart';
 import 'package:serve_surplus/services/receiver.dart';
+import 'package:serve_surplus/views/receiver/individual_donation.dart';
 import 'package:serve_surplus/widgets/custom_button.dart';
 
 class ViewDonationsPage extends StatefulWidget {
@@ -11,16 +12,16 @@ class ViewDonationsPage extends StatefulWidget {
 }
 
 class _ViewDonationsPageState extends State<ViewDonationsPage> {
-  List<Donation> donations = [];
+  List<Donation>? donations;
 
   navigateToIndividualDonation(int index) {
     Navigator.pushNamed(
       context,
-      '/individual-donation',
+      IndividualDonationPage.routeName,
       arguments: {
-        "donorId": donations[index].donor,
-        "donationId": donations[index].donationId,
-        "donation": donations[index],
+        "donorId": donations![index].donor,
+        "donationId": donations![index].donationId,
+        "donation": donations![index],
       },
     );
   }
@@ -44,7 +45,7 @@ class _ViewDonationsPageState extends State<ViewDonationsPage> {
       appBar: AppBar(
         backgroundColor: Colors.black,
         title: const Text(
-          "Live Donations",
+          "All Nearest Donations",
           style: TextStyle(
             fontSize: 17,
             color: Colors.white,
@@ -52,7 +53,7 @@ class _ViewDonationsPageState extends State<ViewDonationsPage> {
         ),
         centerTitle: true,
       ),
-      body: donations.isEmpty
+      body: donations == null
           ? const Center(
               child: CircularProgressIndicator(),
             )
@@ -67,7 +68,7 @@ class _ViewDonationsPageState extends State<ViewDonationsPage> {
                       physics: const NeverScrollableScrollPhysics(),
                       scrollDirection: Axis.vertical,
                       shrinkWrap: true,
-                      itemCount: donations.length,
+                      itemCount: donations!.length,
                       itemBuilder: (context, index) {
                         return GestureDetector(
                           onTap: () => navigateToIndividualDonation(index),
@@ -89,7 +90,7 @@ class _ViewDonationsPageState extends State<ViewDonationsPage> {
                                   child: Stack(
                                     children: [
                                       Image.network(
-                                        donations[index].image,
+                                        donations![index].image,
                                         width: double.infinity,
                                         height: 170,
                                         fit: BoxFit.cover,
@@ -121,9 +122,10 @@ class _ViewDonationsPageState extends State<ViewDonationsPage> {
                                       Align(
                                         alignment: Alignment.topRight,
                                         child: Container(
-                                          width: donations[index].distance! <= 5
+                                          width: donations![index].distance! <=
+                                                  5
                                               ? 140
-                                              : donations[index].distance! < 10
+                                              : donations![index].distance! < 10
                                                   ? 118
                                                   : 124,
                                           padding: const EdgeInsets.symmetric(
@@ -165,9 +167,9 @@ class _ViewDonationsPageState extends State<ViewDonationsPage> {
                                                 width: 6,
                                               ),
                                               Text(
-                                                donations[index].distance! <= 5
+                                                donations![index].distance! <= 5
                                                     ? "Near your place"
-                                                    : "${donations[index].distance} kms away",
+                                                    : "${donations![index].distance} kms away",
                                                 style: const TextStyle(
                                                   color: Colors.white,
                                                   fontSize: 13,
@@ -187,7 +189,7 @@ class _ViewDonationsPageState extends State<ViewDonationsPage> {
                                         CrossAxisAlignment.start,
                                     children: [
                                       Text(
-                                        donations[index].food,
+                                        donations![index].food,
                                         style: const TextStyle(
                                           fontSize: 18,
                                           fontWeight: FontWeight.bold,
@@ -208,7 +210,7 @@ class _ViewDonationsPageState extends State<ViewDonationsPage> {
                                             ),
                                           ),
                                           Text(
-                                            donations[index]
+                                            donations![index]
                                                 .quantity
                                                 .toString(),
                                             style: const TextStyle(

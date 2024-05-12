@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:serve_surplus/schema/donation.dart';
+import 'package:serve_surplus/schema/order.dart';
 import 'package:serve_surplus/views/auth/login.dart';
 import 'package:serve_surplus/views/donor/add_donation.dart';
 import 'package:serve_surplus/views/donor/donation_history.dart';
+import 'package:serve_surplus/views/donor/individual_order.dart';
 import 'package:serve_surplus/views/layouts/donor_layout.dart';
 import 'package:serve_surplus/views/layouts/receiver_layout.dart';
 import 'package:serve_surplus/views/receiver/individual_donation.dart';
+import 'package:serve_surplus/views/receiver/individual_order.dart';
 import 'package:serve_surplus/views/user/profile.dart';
 import 'package:serve_surplus/views/auth/register.dart';
 import 'package:serve_surplus/widgets/edit_profile.dart';
@@ -49,11 +52,6 @@ Route<dynamic> generateRoute(RouteSettings routeSettings) {
         settings: routeSettings,
         builder: (context) => const DonationHistoryPage(),
       );
-    case ReceiverLayout.routeName:
-      return MaterialPageRoute(
-        settings: routeSettings,
-        builder: (context) => const ReceiverLayout(),
-      );
     case IndividualDonationPage.routeName:
       return MaterialPageRoute(
         settings: routeSettings,
@@ -64,6 +62,25 @@ Route<dynamic> generateRoute(RouteSettings routeSettings) {
               as Map<String, dynamic>)["donationId"]! as String,
           donation: (routeSettings.arguments
               as Map<String, dynamic>)["donation"] as Donation,
+        ),
+      );
+    case IndividualDonorOrderPage.routeName:
+      return MaterialPageRoute(
+        settings: routeSettings,
+        builder: (context) => IndividualDonorOrderPage(
+          order: (routeSettings.arguments as Order),
+        ),
+      );
+    case ReceiverLayout.routeName:
+      return MaterialPageRoute(
+        settings: routeSettings,
+        builder: (context) => const ReceiverLayout(),
+      );
+    case IndividualReceiverOrderPage.routeName:
+      return MaterialPageRoute(
+        settings: routeSettings,
+        builder: (context) => IndividualReceiverOrderPage(
+          order: (routeSettings.arguments as Order),
         ),
       );
     default:

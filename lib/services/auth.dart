@@ -65,11 +65,10 @@ class AuthService {
     required BuildContext context,
     required String email,
     required String password,
-    required String role,
   }) async {
     try {
       User user =
-          User(id: '', email: email, password: password, token: '', role: role);
+          User(id: '', email: email, password: password, token: '', role: '');
 
       http.Response response = await http.post(
           Uri.parse("https://serve-surplus.onrender.com/api/auth/login"),
@@ -98,6 +97,7 @@ class AuthService {
                   await preferences.setString("bearer-token",
                       jsonDecode(response.body)["user"]["token"]);
                   if (context.mounted) {
+                    String role = jsonDecode(response.body)["user"]["role"];
                     if (role == "Donor") {
                       Navigator.pushNamedAndRemoveUntil(
                         context,

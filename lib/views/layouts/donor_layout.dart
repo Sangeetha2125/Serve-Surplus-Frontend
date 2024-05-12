@@ -5,7 +5,7 @@ import 'package:serve_surplus/providers/location.dart';
 import 'package:serve_surplus/services/location.dart';
 import 'package:serve_surplus/views/donor/donation_history.dart';
 import 'package:serve_surplus/views/donor/live_donations.dart';
-import 'package:serve_surplus/views/donor/requested_donations.dart';
+import 'package:serve_surplus/views/donor/orders.dart';
 import 'package:serve_surplus/views/user/profile.dart';
 
 class DonorLayout extends StatefulWidget {
@@ -21,7 +21,7 @@ class _DonorLayoutState extends State<DonorLayout> {
 
   final List<Widget> pages = [
     const LiveDonationsPage(),
-    const RequestedDonations(),
+    const DonorOrdersPage(),
     const DonationHistoryPage(),
     const ProfilePage(),
   ];

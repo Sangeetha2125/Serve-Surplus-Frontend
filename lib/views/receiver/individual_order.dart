@@ -1,27 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:serve_surplus/constants/utils.dart';
-import 'package:serve_surplus/schema/donation.dart';
+import 'package:serve_surplus/schema/order.dart';
 import 'package:serve_surplus/services/receiver.dart';
-import 'package:serve_surplus/widgets/custom_button.dart';
 
-class IndividualDonationPage extends StatefulWidget {
-  static const String routeName = "/individual-donation";
-  final String donorId;
-  final String donationId;
-  final Donation donation;
-  const IndividualDonationPage({
-    super.key,
-    required this.donorId,
-    required this.donation,
-    required this.donationId,
-  });
+class IndividualReceiverOrderPage extends StatefulWidget {
+  static const String routeName = "/individual-donor-order";
+  final Order order;
+  const IndividualReceiverOrderPage({super.key, required this.order});
 
   @override
-  State<IndividualDonationPage> createState() => _IndividualDonationPageState();
+  State<IndividualReceiverOrderPage> createState() =>
+      _IndividualReceiverOrderPageState();
 }
 
-class _IndividualDonationPageState extends State<IndividualDonationPage> {
+class _IndividualReceiverOrderPageState
+    extends State<IndividualReceiverOrderPage> {
   Map<String, dynamic>? donor;
   @override
   void initState() {
@@ -32,29 +25,12 @@ class _IndividualDonationPageState extends State<IndividualDonationPage> {
   getDonorDetails() async {
     donor = await ReceiverServices.getDonorDetails(
       context: context,
-      donorId: widget.donorId,
+      donorId: widget.order.donor_id,
+      isDonorReference: true,
     );
     if (context.mounted) {
       setState(() {});
     }
-  }
-
-  void orderFood(int quantity) {
-    Donation order = Donation(
-      food: widget.donation.food,
-      quantity: quantity,
-      image: widget.donation.image,
-      donationId: widget.donationId,
-      donatedAt: widget.donation.donatedAt,
-    );
-    ReceiverServices.orderFood(
-      context: context,
-      donorId: widget.donorId,
-      donation: order,
-    );
-    Navigator.pop(context);
-
-    setState(() {});
   }
 
   @override
@@ -83,7 +59,7 @@ class _IndividualDonationPageState extends State<IndividualDonationPage> {
                         14,
                       ),
                       child: Image.network(
-                        widget.donation.image,
+                        widget.order.image,
                         width: double.infinity,
                         height: 200,
                         fit: BoxFit.fitWidth,
@@ -119,7 +95,7 @@ class _IndividualDonationPageState extends State<IndividualDonationPage> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            widget.donation.food,
+                            widget.order.food,
                             style: const TextStyle(
                               fontWeight: FontWeight.bold,
                               fontSize: 20,
@@ -139,7 +115,7 @@ class _IndividualDonationPageState extends State<IndividualDonationPage> {
                                 ),
                               ),
                               Text(
-                                widget.donation.quantity.toString(),
+                                widget.order.quantity.toString(),
                                 style: const TextStyle(
                                   fontSize: 16,
                                 ),
@@ -150,7 +126,7 @@ class _IndividualDonationPageState extends State<IndividualDonationPage> {
                           Row(
                             children: [
                               const Text(
-                                "Donated on: ",
+                                "Ordered on: ",
                                 style: TextStyle(
                                   fontSize: 16,
                                   fontWeight: FontWeight.w500,
@@ -159,7 +135,7 @@ class _IndividualDonationPageState extends State<IndividualDonationPage> {
                               ),
                               Text(
                                 DateFormat('MMM d, yyyy - h:mm a')
-                                    .format(widget.donation.donatedAt!),
+                                    .format(widget.order.date),
                                 style: const TextStyle(
                                   fontSize: 16,
                                 ),
@@ -253,18 +229,6 @@ class _IndividualDonationPageState extends State<IndividualDonationPage> {
                             height: 6,
                           ),
                           const Divider(),
-                          const SizedBox(
-                            height: 6,
-                          ),
-                          CustomButton(
-                            "Request Donation",
-                            formKey: null,
-                            userService: () => addOrderDialog(
-                              context: context,
-                              donation: widget.donation,
-                              orderFood: orderFood,
-                            ),
-                          ),
                         ],
                       ),
                     )

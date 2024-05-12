@@ -3,6 +3,7 @@ import 'package:geolocator/geolocator.dart';
 import 'package:provider/provider.dart';
 import 'package:serve_surplus/providers/location.dart';
 import 'package:serve_surplus/services/location.dart';
+import 'package:serve_surplus/views/receiver/orders.dart';
 import 'package:serve_surplus/views/receiver/view_donations.dart';
 import 'package:serve_surplus/views/user/profile.dart';
 
@@ -19,6 +20,7 @@ class _ReceiverLayoutState extends State<ReceiverLayout> {
 
   final List<Widget> pages = [
     const ViewDonationsPage(),
+    const ReceiverOrdersPage(),
     const ProfilePage(),
   ];
   Position? _currentLocation;
@@ -74,6 +76,13 @@ class _ReceiverLayoutState extends State<ReceiverLayout> {
             ),
             label: 'View Donations',
             tooltip: "View Donations",
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(
+              Icons.shopping_cart,
+            ),
+            label: 'My Orders',
+            tooltip: "My Orders",
           ),
           BottomNavigationBarItem(
             icon: Icon(

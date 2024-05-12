@@ -22,7 +22,7 @@ class _LiveDonationsPageState extends State<LiveDonationsPage> {
     );
   }
 
-  List<Donation> donations = [];
+  List<Donation>? donations;
   getLiveDonations() async {
     donations = await DonorServices.getLiveDonations(context: context);
     setState(() {});
@@ -59,7 +59,7 @@ class _LiveDonationsPageState extends State<LiveDonationsPage> {
           ),
         ],
       ),
-      body: donations.isEmpty
+      body: donations == null
           ? const Center(
               child: CircularProgressIndicator(),
             )
@@ -74,7 +74,7 @@ class _LiveDonationsPageState extends State<LiveDonationsPage> {
                       physics: const NeverScrollableScrollPhysics(),
                       scrollDirection: Axis.vertical,
                       shrinkWrap: true,
-                      itemCount: donations.length,
+                      itemCount: donations!.length,
                       itemBuilder: (context, index) {
                         return Container(
                           margin: const EdgeInsets.symmetric(
@@ -94,7 +94,7 @@ class _LiveDonationsPageState extends State<LiveDonationsPage> {
                                 child: Stack(
                                   children: [
                                     Image.network(
-                                      donations[index].image,
+                                      donations![index].image,
                                       width: double.infinity,
                                       height: 170,
                                       fit: BoxFit.cover,
@@ -179,7 +179,7 @@ class _LiveDonationsPageState extends State<LiveDonationsPage> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
-                                      donations[index].food,
+                                      donations![index].food,
                                       style: const TextStyle(
                                         fontSize: 18,
                                         fontWeight: FontWeight.bold,
@@ -200,7 +200,7 @@ class _LiveDonationsPageState extends State<LiveDonationsPage> {
                                           ),
                                         ),
                                         Text(
-                                          donations[index].quantity.toString(),
+                                          donations![index].quantity.toString(),
                                           style: const TextStyle(
                                             fontSize: 16,
                                           ),
@@ -224,7 +224,7 @@ class _LiveDonationsPageState extends State<LiveDonationsPage> {
                                         Text(
                                           DateFormat('MMM d, yyyy - h:mm a')
                                               .format(
-                                                  donations[index].donatedAt!),
+                                                  donations![index].donatedAt!),
                                           style: const TextStyle(
                                             fontSize: 16,
                                           ),

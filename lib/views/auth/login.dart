@@ -15,14 +15,12 @@ class _LoginPageState extends State<LoginPage> {
   final GlobalKey<FormState> _loginKey = GlobalKey<FormState>();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  final TextEditingController _roleController = TextEditingController();
 
   void loginUser() {
     AuthService.loginUser(
       context: context,
       email: _emailController.text,
       password: _passwordController.text,
-      role: _roleController.text,
     );
   }
 
@@ -70,14 +68,6 @@ class _LoginPageState extends State<LoginPage> {
                       label: "Password",
                       isPassword: true,
                       prefixIcon: Icons.lock,
-                    ),
-                    const SizedBox(
-                      height: 16,
-                    ),
-                    CustomTextField(
-                      controller: _roleController,
-                      label: "Role",
-                      prefixIcon: Icons.person,
                     ),
                     const SizedBox(
                       height: 16,

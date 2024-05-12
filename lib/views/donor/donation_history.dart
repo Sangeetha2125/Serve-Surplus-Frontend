@@ -12,7 +12,7 @@ class DonationHistoryPage extends StatefulWidget {
 }
 
 class _DonationHistoryPageState extends State<DonationHistoryPage> {
-  List<Donation> donations = [];
+  List<Donation>? donations;
   getDonationHistory() async {
     donations = await DonorServices.getDonationHistory(context: context);
     setState(() {});
@@ -38,7 +38,7 @@ class _DonationHistoryPageState extends State<DonationHistoryPage> {
         ),
         centerTitle: true,
       ),
-      body: donations.isEmpty
+      body: donations == null
           ? const Center(
               child: CircularProgressIndicator(),
             )
@@ -53,7 +53,7 @@ class _DonationHistoryPageState extends State<DonationHistoryPage> {
                       physics: const NeverScrollableScrollPhysics(),
                       scrollDirection: Axis.vertical,
                       shrinkWrap: true,
-                      itemCount: donations.length,
+                      itemCount: donations!.length,
                       itemBuilder: (context, index) {
                         return Container(
                           margin: const EdgeInsets.symmetric(
@@ -71,7 +71,7 @@ class _DonationHistoryPageState extends State<DonationHistoryPage> {
                                     topLeft: Radius.circular(12),
                                     topRight: Radius.circular(12)),
                                 child: Image.network(
-                                  donations[index].image,
+                                  donations![index].image,
                                   width: double.infinity,
                                   height: 170,
                                   fit: BoxFit.cover,
@@ -107,7 +107,7 @@ class _DonationHistoryPageState extends State<DonationHistoryPage> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
-                                      donations[index].food,
+                                      donations![index].food,
                                       style: const TextStyle(
                                         fontSize: 18,
                                         fontWeight: FontWeight.bold,
@@ -128,7 +128,7 @@ class _DonationHistoryPageState extends State<DonationHistoryPage> {
                                           ),
                                         ),
                                         Text(
-                                          donations[index].quantity.toString(),
+                                          donations![index].quantity.toString(),
                                           style: const TextStyle(
                                             fontSize: 16,
                                           ),
@@ -152,7 +152,7 @@ class _DonationHistoryPageState extends State<DonationHistoryPage> {
                                         Text(
                                           DateFormat('MMM d, yyyy - h:mm a')
                                               .format(
-                                                  donations[index].donatedAt!),
+                                                  donations![index].donatedAt!),
                                           style: const TextStyle(
                                             fontSize: 16,
                                           ),

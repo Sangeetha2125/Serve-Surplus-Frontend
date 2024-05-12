@@ -9,6 +9,7 @@ import 'package:serve_surplus/constants/secrets.dart';
 import 'package:serve_surplus/providers/user.dart';
 import 'package:serve_surplus/schema/donation.dart';
 import "package:http/http.dart" as http;
+import 'package:serve_surplus/schema/order.dart';
 
 class DonorServices {
   static Future<Donation?> addDonationItem({
@@ -151,5 +152,77 @@ class DonorServices {
       debugPrint(error.toString());
     }
     return donations;
+  }
+
+  static Future<List<Order>> getDonorOrders(
+      {required BuildContext context, String? status}) async {
+    List<Order> orders = [];
+    try {
+      String token =
+          Provider.of<UserProvider>(context, listen: false).user["token"];
+      String getDonorOrdersUrl =
+          "https://serve-surplus.onrender.com/api/donor/orders";
+      if (status == "Processing" || status == "Delivered") {
+        getDonorOrdersUrl += "?status=$status";
+      }
+      http.Response response = await http.get(
+        Uri.parse(
+          getDonorOrdersUrl,
+        ),
+        headers: <String, String>{
+          "Content-Type": "application/json; charset=UTF-8",
+          "Authorization": "Bearer $token"
+        },
+      );
+      debugPrint("Get Donor Orders - ${jsonDecode(response.body)}");
+      if (context.mounted) {
+        httpResponseHandler(
+          context: context,
+          response: response,
+          onSuccess: () {
+            final donorOrders = jsonDecode(response.body);
+            orders = (donorOrders as List<dynamic>)
+                .map((d) => Order.fromMap(d))
+                .toList();
+          },
+        );
+      }
+    } catch (error) {
+      debugPrint("getDonorOrders - $error");
+    }
+    return orders;
+  }
+
+  static Future<Map<String, dynamic>?> getReceiverDetails({
+    required BuildContext context,
+    required String receiverId,
+  }) async {
+    Map<String, dynamic>? result;
+    try {
+      String token =
+          Provider.of<UserProvider>(context, listen: false).user["token"];
+      http.Response response = await http.get(
+        Uri.parse(
+          "https://serve-surplus.onrender.com/api/donor/receiver-info?receiverId=$receiverId",
+        ),
+        headers: <String, String>{
+          "Content-Type": "application/json; charset=UTF-8",
+          "Authorization": "Bearer $token"
+        },
+      );
+      debugPrint("Get Receiver Details - ${jsonDecode(response.body)}");
+      if (context.mounted) {
+        httpResponseHandler(
+          context: context,
+          response: response,
+          onSuccess: () {
+            result = jsonDecode(response.body) as Map<String, dynamic>;
+          },
+        );
+      }
+    } catch (error) {
+      debugPrint("getReceiverDetails - $error");
+    }
+    return result;
   }
 }
