@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_otp_text_field/flutter_otp_text_field.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:serve_surplus/schema/donation.dart';
+import 'package:serve_surplus/schema/order.dart';
+import 'package:serve_surplus/services/donor.dart';
 import 'package:serve_surplus/widgets/custom_textfield.dart';
 
 Future<File?> pickImage() async {
@@ -226,11 +228,11 @@ void addOrderDialog(
       });
 }
 
-void orderConfirmDialog({
+bool orderConfirmDialog({
   required BuildContext context,
-  required Function confirmOrder,
+  required Order order,
+  required bool isCorrect,
 }) {
-  bool isCorrect = true;
   showDialog(
       context: context,
       barrierDismissible: false,
@@ -259,8 +261,13 @@ void orderConfirmDialog({
                 borderColor: Colors.black,
                 focusedBorderColor: const Color.fromARGB(255, 8, 8, 127),
                 enabledBorderColor: Colors.black45,
-                onSubmit: (String verificationCode) {
-                  isCorrect = false;
+                onSubmit: (String verificationCode) async {
+                  isCorrect = await DonorServices.confirmOrder(
+                      context: context,
+                      donorId: order.donor_id,
+                      receiverId: order.receiver_id,
+                      orderId: order.id,
+                      secret: verificationCode);
                 },
               ),
               const SizedBox(
@@ -298,4 +305,5 @@ void orderConfirmDialog({
           ],
         );
       });
+  return isCorrect;
 }

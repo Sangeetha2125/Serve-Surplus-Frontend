@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_otp_text_field/flutter_otp_text_field.dart';
 import 'package:intl/intl.dart';
-import 'package:serve_surplus/constants/utils.dart';
 import 'package:serve_surplus/schema/order.dart';
 import 'package:serve_surplus/services/donor.dart';
 import 'package:serve_surplus/widgets/custom_button.dart';
@@ -32,8 +32,6 @@ class _IndividualDonorOrderPageState extends State<IndividualDonorOrderPage> {
       setState(() {});
     }
   }
-
-  confirmOrder() {}
 
   @override
   Widget build(BuildContext context) {
@@ -234,14 +232,114 @@ class _IndividualDonorOrderPageState extends State<IndividualDonorOrderPage> {
                           const SizedBox(
                             height: 6,
                           ),
-                          CustomButton(
-                            "Confirm Order",
-                            formKey: null,
-                            userService: () => orderConfirmDialog(
-                              context: context,
-                              confirmOrder: confirmOrder,
-                            ),
-                          )
+                          widget.order.status == "Processing"
+                              ? CustomButton("Confirm Order", formKey: null,
+                                  userService: () {
+                                  showDialog(
+                                      context: context,
+                                      barrierDismissible: false,
+                                      builder: (context) {
+                                        return AlertDialog(
+                                          insetPadding:
+                                              const EdgeInsets.all(10),
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(10),
+                                          ),
+                                          title: const Center(
+                                            child: Text(
+                                              "Enter OTP",
+                                              style: TextStyle(
+                                                fontSize: 19,
+                                                fontWeight: FontWeight.w500,
+                                              ),
+                                            ),
+                                          ),
+                                          content: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            mainAxisSize: MainAxisSize.min,
+                                            children: [
+                                              OtpTextField(
+                                                numberOfFields: 6,
+                                                showFieldAsBox: true,
+                                                borderColor: Colors.black,
+                                                focusedBorderColor:
+                                                    const Color.fromARGB(
+                                                        255, 8, 8, 127),
+                                                enabledBorderColor:
+                                                    Colors.black45,
+                                                onSubmit: (String
+                                                    verificationCode) async {
+                                                  bool result = await DonorServices
+                                                      .confirmOrder(
+                                                          context: context,
+                                                          donorId: widget
+                                                              .order.donor_id,
+                                                          receiverId: widget
+                                                              .order
+                                                              .receiver_id,
+                                                          orderId:
+                                                              widget.order.id,
+                                                          secret:
+                                                              verificationCode);
+                                                  if (result == true) {
+                                                    if (context.mounted) {
+                                                      Navigator.pop(context);
+                                                      Navigator.pop(context);
+                                                    }
+                                                  } else {
+                                                    if (context.mounted) {
+                                                      Navigator.pop(context);
+                                                      ScaffoldMessenger.of(
+                                                              context)
+                                                          .showSnackBar(
+                                                        const SnackBar(
+                                                          content: Text(
+                                                              "Order confirmed successfully"),
+                                                        ),
+                                                      );
+                                                    }
+                                                  }
+                                                },
+                                              ),
+                                              const SizedBox(
+                                                height: 10,
+                                              ),
+                                              const Text(
+                                                "Enter the OTP received from receiver to confirm the order!",
+                                                style: TextStyle(
+                                                  color: Colors.black87,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                          actions: [
+                                            Center(
+                                              child: InkWell(
+                                                onTap: () {
+                                                  Navigator.pop(context);
+                                                },
+                                                child: const Padding(
+                                                  padding: EdgeInsets.only(
+                                                      left: 14.0),
+                                                  child: Text(
+                                                    "Cancel",
+                                                    style: TextStyle(
+                                                      color: Colors.red,
+                                                      fontSize: 14,
+                                                      fontWeight:
+                                                          FontWeight.w500,
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        );
+                                      });
+                                })
+                              : const SizedBox()
                         ],
                       ),
                     )

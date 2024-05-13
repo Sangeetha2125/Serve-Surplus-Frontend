@@ -1,4 +1,6 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:serve_surplus/schema/order.dart';
 import 'package:serve_surplus/services/donor.dart';
 import 'package:serve_surplus/views/donor/individual_order.dart';
@@ -13,6 +15,7 @@ class DonorOrdersPage extends StatefulWidget {
 
 class _DonorOrdersPageState extends State<DonorOrdersPage> {
   List<Order>? orders;
+  String status = "All Orders";
 
   navigateToIndividualOrder(int index) {
     Navigator.pushNamed(
@@ -27,6 +30,18 @@ class _DonorOrdersPageState extends State<DonorOrdersPage> {
     if (context.mounted) {
       setState(() {});
     }
+  }
+
+  getOrdersByStatus() async {
+    if (status == "All Orders") {
+      orders = await DonorServices.getDonorOrders(context: context);
+    } else {
+      orders = await DonorServices.getDonorOrders(
+        context: context,
+        status: status,
+      );
+    }
+    setState(() {});
   }
 
   @override
@@ -63,6 +78,47 @@ class _DonorOrdersPageState extends State<DonorOrdersPage> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              status = "All Orders";
+                              getOrdersByStatus();
+                            });
+                          },
+                          child: Chip(
+                            label: const Text("All Orders"),
+                            elevation: status == "All Orders" ? 25 : 0,
+                          ),
+                        ),
+                        GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              status = "Processing";
+                              getOrdersByStatus();
+                            });
+                          },
+                          child: Chip(
+                            label: const Text("Processing"),
+                            elevation: status == "Processing" ? 25 : 0,
+                          ),
+                        ),
+                        GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              status = "Delivered";
+                              getOrdersByStatus();
+                            });
+                          },
+                          child: Chip(
+                            label: const Text("Delivered"),
+                            elevation: status == "Delivered" ? 25 : 0,
+                          ),
+                        ),
+                      ],
+                    ),
                     ListView.builder(
                       physics: const NeverScrollableScrollPhysics(),
                       scrollDirection: Axis.vertical,
