@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_otp_text_field/flutter_otp_text_field.dart';
 import 'package:intl/intl.dart';
+import 'package:serve_surplus/constants/utils.dart';
 import 'package:serve_surplus/schema/order.dart';
 import 'package:serve_surplus/services/donor.dart';
 import 'package:serve_surplus/widgets/custom_button.dart';
@@ -187,7 +188,7 @@ class _IndividualDonorOrderPageState extends State<IndividualDonorOrderPage> {
                                   ],
                                 ),
                                 const SizedBox(
-                                  height: 6,
+                                  height: 5,
                                 ),
                                 Row(
                                   children: [
@@ -203,7 +204,7 @@ class _IndividualDonorOrderPageState extends State<IndividualDonorOrderPage> {
                                   ],
                                 ),
                                 const SizedBox(
-                                  height: 6,
+                                  height: 5,
                                 ),
                                 Text.rich(
                                   TextSpan(
@@ -291,13 +292,10 @@ class _IndividualDonorOrderPageState extends State<IndividualDonorOrderPage> {
                                                   } else {
                                                     if (context.mounted) {
                                                       Navigator.pop(context);
-                                                      ScaffoldMessenger.of(
-                                                              context)
-                                                          .showSnackBar(
-                                                        const SnackBar(
-                                                          content: Text(
-                                                              "Order confirmed successfully"),
-                                                        ),
+                                                      orderConfirmDialog(
+                                                        context: context,
+                                                        receiverName:
+                                                            receiver!["name"],
                                                       );
                                                     }
                                                   }

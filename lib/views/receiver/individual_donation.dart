@@ -53,7 +53,9 @@ class _IndividualDonationPageState extends State<IndividualDonationPage> {
       donation: order,
     );
     Navigator.pop(context);
-
+    donationRequestDialog(
+      context: context,
+    );
     setState(() {});
   }
 
@@ -211,7 +213,7 @@ class _IndividualDonationPageState extends State<IndividualDonationPage> {
                                   ],
                                 ),
                                 const SizedBox(
-                                  height: 6,
+                                  height: 5,
                                 ),
                                 Row(
                                   children: [
@@ -227,7 +229,7 @@ class _IndividualDonationPageState extends State<IndividualDonationPage> {
                                   ],
                                 ),
                                 const SizedBox(
-                                  height: 6,
+                                  height: 5,
                                 ),
                                 Text.rich(
                                   TextSpan(

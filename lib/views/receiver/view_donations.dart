@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:serve_surplus/providers/location.dart';
 import 'package:serve_surplus/schema/donation.dart';
 import 'package:serve_surplus/services/receiver.dart';
 import 'package:serve_surplus/views/receiver/individual_donation.dart';
@@ -29,21 +27,14 @@ class _ViewDonationsPageState extends State<ViewDonationsPage> {
   }
 
   getAllNearestDonations() async {
-    if (Provider.of<LocationProvider>(context).location != null) {
-      donations =
-          await ReceiverServices.getAllNearestDonations(context: context);
-    } else {
-      donations = [];
-    }
-    if (context.mounted) {
-      setState(() {});
-    }
+    donations = await ReceiverServices.getAllNearestDonations(context: context);
+    setState(() {});
   }
 
   @override
   void initState() {
-    super.initState();
     getAllNearestDonations();
+    super.initState();
   }
 
   @override

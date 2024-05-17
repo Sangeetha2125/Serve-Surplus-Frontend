@@ -3,7 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:serve_surplus/providers/location.dart';
 import 'package:serve_surplus/providers/user.dart';
 import 'package:serve_surplus/routes/router.dart';
-import 'package:serve_surplus/services/auth.dart';
+import 'package:serve_surplus/services/user.dart';
 import 'package:serve_surplus/views/auth/register.dart';
 import 'package:serve_surplus/views/layouts/donor_layout.dart';
 import 'package:serve_surplus/views/layouts/receiver_layout.dart';
@@ -35,7 +35,7 @@ class _MyAppState extends State<MyApp> {
   }
 
   void getUserInfo() {
-    AuthService.getUserData(context);
+    UserServices.getUserData(context);
     setState(() {});
   }
 

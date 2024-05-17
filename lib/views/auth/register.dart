@@ -12,17 +12,18 @@ class RegisterPage extends StatefulWidget {
 }
 
 class _RegisterPageState extends State<RegisterPage> {
+  String _selectedRole = "Donor";
+
   final GlobalKey<FormState> _registerKey = GlobalKey<FormState>();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  final TextEditingController _roleController = TextEditingController();
 
   void registerUser() {
-    AuthService.registerUser(
+    AuthServices.registerUser(
       context: context,
       email: _emailController.text,
       password: _passwordController.text,
-      role: _roleController.text,
+      role: _selectedRole,
     );
   }
 
@@ -74,10 +75,49 @@ class _RegisterPageState extends State<RegisterPage> {
                     const SizedBox(
                       height: 16,
                     ),
-                    CustomTextField(
-                      controller: _roleController,
-                      label: "Role",
-                      prefixIcon: Icons.person,
+                    DropdownButtonFormField(
+                      value: _selectedRole,
+                      decoration: const InputDecoration(
+                        prefixIcon: Icon(
+                          Icons.person,
+                        ),
+                        hintStyle: TextStyle(
+                          color: Colors.black54,
+                        ),
+                        contentPadding: EdgeInsets.all(
+                          16,
+                        ),
+                        border: OutlineInputBorder(
+                          borderSide: BorderSide(
+                            color: Colors.black,
+                          ),
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                            color: Colors.black,
+                          ),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                            color: Colors.black,
+                          ),
+                        ),
+                      ),
+                      items: const [
+                        DropdownMenuItem(
+                          value: "Donor",
+                          child: Text("Donor"),
+                        ),
+                        DropdownMenuItem(
+                          value: "Receiver",
+                          child: Text("Receiver"),
+                        ),
+                      ],
+                      onChanged: (value) {
+                        setState(() {
+                          _selectedRole = value.toString();
+                        });
+                      },
                     ),
                     const SizedBox(
                       height: 16,

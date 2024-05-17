@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:serve_surplus/providers/user.dart';
-import 'package:serve_surplus/services/auth.dart';
+import 'package:serve_surplus/services/user.dart';
 import 'package:serve_surplus/widgets/custom_button.dart';
 import 'package:serve_surplus/widgets/custom_textfield.dart';
 
@@ -24,7 +24,7 @@ class _EditProfileState extends State<EditProfile> {
   final TextEditingController _pinCodeController = TextEditingController();
 
   void editProfile() {
-    AuthService.createProfile(
+    UserServices.createProfile(
       context: context,
       name: _nameController.text,
       phone: _phoneController.text,

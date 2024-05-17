@@ -17,7 +17,7 @@ class _LoginPageState extends State<LoginPage> {
   final TextEditingController _passwordController = TextEditingController();
 
   void loginUser() {
-    AuthService.loginUser(
+    AuthServices.loginUser(
       context: context,
       email: _emailController.text,
       password: _passwordController.text,
