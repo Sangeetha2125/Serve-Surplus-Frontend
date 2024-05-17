@@ -304,15 +304,17 @@ void orderConfirmDialog(
           "Your order to the receiver $receiverName has been placed successfully",
         ),
         actions: [
-          InkWell(
-            onTap: () {
-              Navigator.pop(context);
-            },
-            child: const Text(
-              "OK",
-              style: TextStyle(
-                color: Colors.black,
-                fontWeight: FontWeight.w500,
+          Center(
+            child: InkWell(
+              onTap: () {
+                Navigator.pop(context);
+              },
+              child: const Text(
+                "OK",
+                style: TextStyle(
+                  color: Colors.black,
+                  fontWeight: FontWeight.w500,
+                ),
               ),
             ),
           ),

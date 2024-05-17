@@ -288,15 +288,15 @@ class _IndividualDonorOrderPageState extends State<IndividualDonorOrderPage> {
                                                     if (context.mounted) {
                                                       Navigator.pop(context);
                                                       Navigator.pop(context);
-                                                    }
-                                                  } else {
-                                                    if (context.mounted) {
-                                                      Navigator.pop(context);
                                                       orderConfirmDialog(
                                                         context: context,
                                                         receiverName:
                                                             receiver!["name"],
                                                       );
+                                                    }
+                                                  } else {
+                                                    if (context.mounted) {
+                                                      Navigator.pop(context);
                                                     }
                                                   }
                                                 },
